@@ -1,0 +1,17 @@
+version: "1.0"
+services:
+  elastic-agent:
+    container_name: elastic-agent
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - REDIS_URL=redis://redis-server:6379
+    build: .
+    ports:
+      - "3000:3000"
+    links:
+      - redis
+  redis:
+    container_name: redis-server
+    image: "redis:7.0-rc"
