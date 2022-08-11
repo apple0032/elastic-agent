@@ -70,18 +70,18 @@ app.get('/getData', async function (req, res) {
             sortName = "byDate"
             sortBy = { "date" : "desc" }
         }
-        console.log(sortBy);
+        //console.log(sortBy);
 
         let page = 0;
         if(typeof req.query.page !== 'undefined'){
             page = (req.query.page - 1) * 10;
         }
-        console.log(page);
+        //console.log(page);
 
-        let redis_target = 'IG_DATA_'+ sortName + "_" + req.query.page;
-        console.log(redis_target);
+        let redisKey = 'IG_DATA_'+ sortName + "_" + req.query.page;
+        //console.log(redisKey);
 
-        if (!(await client.get(redis_target))) {
+        if (!(await client.get(redisKey))) {
             console.log('QUERY ELASTIC CLOUD');
 
             const result= await eleClient.search({
@@ -94,12 +94,12 @@ app.get('/getData', async function (req, res) {
 
             IG_DATA = result.hits.hits;
 
-            await client.set(redis_target, JSON.stringify(IG_DATA), { EX: 300 });
+            await client.set(redisKey, JSON.stringify(IG_DATA), { EX: 300 });
 
             await client.quit();
             return res.status(200).json({data : IG_DATA});
         } else {
-            IG_DATA = await client.get(redis_target);
+            IG_DATA = await client.get(redisKey);
             await client.quit();
             return res.status(200).json({data : JSON.parse(IG_DATA)});
         }
