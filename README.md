@@ -1,4 +1,7 @@
-# Middleware of the IG showing platform and the elasticsearch Cloud
+# API Middleware of the Instagram ranked feed platform
 
-## enviorment
-- Need cloud id & apiKey
+`This API agent connect with the elasticsearch Cloud, and retrieve Index documents from elasticsearch Index API by using node package 'elastic/elasticsearch' `
+
+## Set up Envenviorment
+- Need cloud id & apiKey setup in .env 
+- run `docker compose up -d` in the root folder

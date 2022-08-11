@@ -1,7 +1,8 @@
 console.log("API Triggered");
-require('dotenv').config()
 
-const { Client } = require('@elastic/elasticsearch')
+
+import 'dotenv/config'
+import {Client as Client} from '@elastic/elasticsearch';
 
 const client = new Client({
     cloud: { id: process.env.CLOUD_ID },
@@ -47,13 +48,14 @@ async function run() {
 
     // Search API
     const result= await client.search({
-        index: 'test-index',
+        index: 'ig-data-cloud',
         "sort" : [
-            { "hot" : "desc" }
+            { "like" : "desc" },
         ],
-        query: {
-            match: { quote: 'website' }
-        }
+        "from": 10
+        // query: {
+        //     match: { quote: 'website' }
+        // }
     });
 
     console.log(result.hits.hits)
