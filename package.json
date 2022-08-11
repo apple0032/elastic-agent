@@ -10,6 +10,7 @@
     "@elastic/elasticsearch": "^8.2.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-list-endpoints": "^4.0.1",

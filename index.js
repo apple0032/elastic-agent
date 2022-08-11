@@ -2,9 +2,11 @@ import express from "express";
 import 'dotenv/config';
 const PORT = process.env.PORT || 3000;
 import * as fs from 'fs';
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());
+app.use(cors())
 
 import { createClient } from "redis";
 
