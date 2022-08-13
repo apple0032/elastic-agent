@@ -35,21 +35,24 @@ app.get('/setData', async function (req, res) {
     try {
 
         const response = await eleClient.info();
-        const dummyJson = JSON.parse(fs.readFileSync('./dummy.json'));
+        const allPosts = JSON.parse(fs.readFileSync('./9gag_posts.json'));
 
-        for (const data of dummyJson) {
+        for (const data of allPosts) {
             console.log(data.media);
             await eleClient.index({
-                index: 'ig-data-cloud',
+                index: '9gag-data-cloud',
                 document: {
-                    id: data.id,
-                    media: data.media,
-                    like : data.like,
-                    date : data.date
+                    id : data.id,
+                    media_type: data.media_type,
+                    media_url: data.media_url,
+                    timestamp : data.timestamp,
+                    comments_count : data.comments_count,
+                    like_count : data.like_count,
+                    permalink : data.permalink
                 }
             });
 
-            await eleClient.indices.refresh({ index: 'ig-data-cloud' });
+            await eleClient.indices.refresh({ index: '9gag-data-cloud' });
         }
 
         res.json({response_code: 200, message : 'success'});
@@ -67,10 +70,10 @@ app.get('/getData', async function (req, res) {
         let IG_DATA = {};
 
         let sortName = "byLike";
-        let sortBy = { "like" : "desc" };
+        let sortBy = { "like_count" : "desc" };
         if( req.query.type === "fresh" ){
             sortName = "byDate"
-            sortBy = { "date" : "desc" }
+            sortBy = { "timestamp" : "desc" }
         }
         //console.log(sortBy);
 
@@ -87,7 +90,7 @@ app.get('/getData', async function (req, res) {
             console.log('QUERY ELASTIC CLOUD');
 
             const result= await eleClient.search({
-                index: 'ig-data-cloud',
+                index: '9gag-data-cloud',
                 "sort" : [
                     sortBy
                 ],
